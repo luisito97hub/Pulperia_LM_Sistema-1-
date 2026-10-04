@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?><sqlb_project><db path="db" readonly="0" foreign_keys="1" case_sensitive_like="0" temp_store="0" wal_autocheckpoint="1000" synchronous="2"/><attached/><window><main_tabs open="structure browser pragmas query" current="3"/></window><tab_structure><column_width id="0" width="300"/><column_width id="1" width="0"/><column_width id="2" width="150"/><column_width id="3" width="820"/><column_width id="4" width="0"/><expanded_item id="0" parent="1"/><expanded_item id="1" parent="1"/><expanded_item id="2" parent="1"/><expanded_item id="3" parent="1"/></tab_structure><tab_browse><table title=".Navegables" custom_title="0" dock_id="1" table="0,10:Navegables"/><dock_state state="000000ff00000000fd00000001000000020000000000000000fc0100000001fb000000160064006f0063006b00420072006f00770073006500310100000000ffffffff0000018b00ffffff000000000000000000000004000000040000000800000008fc00000000"/><default_encoding codec=""/><browse_table_settings/></tab_browse><tab_sql><sql name="SQL 1*">-- Tabla de productos
+CREATE TABLE IF NOT EXISTS productos (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    nombre TEXT NOT NULL,
+    precio REAL NOT NULL,
+    stock INTEGER NOT NULL DEFAULT 0
+);
+
+-- Tabla de ventas (encabezado de factura)
+CREATE TABLE IF NOT EXISTS ventas (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    fecha TEXT NOT NULL,
+    cliente TEXT NOT NULL,
+    total REAL NOT NULL
+);
+
+-- Tabla de detalle de venta (líneas de cada factura)
+CREATE TABLE IF NOT EXISTS detalle_venta (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    venta_id INTEGER NOT NULL,
+    producto TEXT NOT NULL,
+    cantidad INTEGER NOT NULL,
+    precio REAL NOT NULL,
+    subtotal REAL NOT NULL,
+    FOREIGN KEY (venta_id) REFERENCES ventas(id)
+);
+
+-- Datos de ejemplo: productos de la pulpería
+INSERT INTO productos (nombre, precio, stock) VALUES
+    ('Coca Cola 600ml', 18.00, 24),
+    ('Pan de barra', 25.00, 15),
+    ('Huevos (unidad)', 4.50, 120),
+    ('Arroz 1lb', 14.00, 30),
+    ('Frijoles 1lb', 16.00, 25),
+    ('Aceite 500ml', 42.00, 10),
+    ('Azúcar 1lb', 13.00, 20),
+    ('Galleta paquete', 8.00, 40);
+
+-- Datos de ejemplo: ventas de prueba
+INSERT INTO ventas (fecha, cliente, total) VALUES
+    ('2026-09-21 09:15:32', 'María Rodríguez', 68.50),
+    ('2026-09-21 11:42:10', 'Cliente general', 56.00);
+
+-- Detalle de la venta 1
+INSERT INTO detalle_venta (venta_id, producto, cantidad, precio, subtotal) VALUES
+    (1, 'Coca Cola 600ml', 2, 18.00, 36.00),
+    (1, 'Pan de barra', 1, 25.00, 25.00),
+    (1, 'Huevos (unidad)', 4, 4.50, 18.00);
+
+-- Detalle de la venta 2
+INSERT INTO detalle_venta (venta_id, producto, cantidad, precio, subtotal) VALUES
+    (2, 'Arroz 1lb', 2, 14.00, 28.00),
+    (2, 'Frijoles 1lb', 1, 16.00, 16.00),
+    (2, 'Galleta paquete', 2, 8.00, 16.00);
+</sql><current_tab id="0"/></tab_sql></sqlb_project>
